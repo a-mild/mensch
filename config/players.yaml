@@ -1,12 +1,12 @@
 0:
   name: Alice
-  color: [255, 255, 0]
+  color: [255, 255, 0, 255]
 1:
   name: Bob
-  color: [0, 255, 0]
+  color: [0, 255, 0, 255]
 2:
   name: Chris
-  color: [255, 0, 0]
+  color: [255, 0, 0, 255]
 3:
   name: Dora
-  color: [0, 0, 255]
+  color: [0, 0, 255, 255]

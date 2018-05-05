@@ -16,7 +16,7 @@ from inputhandler import InputHandler
 from myspritegroups import AllSpritesGroup, NumberedGroup
 
 
-import globalvars as g
+# import globalvars as g
 
 with open('config/players.yaml') as cfg:
 	player_default_config = yaml.load(cfg)
@@ -43,6 +43,7 @@ class App(GUI, InputHandler):
 		# Init spritegroups
 		self.allfields = NumberedGroup()
 		self.boardfields = NumberedGroup()
+		self.homefields = NumberedGroup()
 		self.allmeeples = NumberedGroup()
 		self.die_group = pg.sprite.GroupSingle()
 		self.allsprites = AllSpritesGroup()
@@ -59,10 +60,9 @@ class App(GUI, InputHandler):
 		while next(self.players_cycle) != self.active_player:
 			continue
 
-
 	def on_execute(self):
 		GUI.__init__(self)
-		self.allfields.add(self.boardfields)
+		self.allfields.add(self.boardfields, self.homefields)
 		self.allsprites.add(self.allmeeples, self.die)
 		while self.running:
 			if len(self.players) <= 1:
@@ -77,11 +77,13 @@ class App(GUI, InputHandler):
 					self.on_event(event)
 				self.on_loop()
 				self.render()
+			if self.active_player.meeples_home == 4:
+				print("Glückwunsch! {} hat gewonnen".format(self.active_player.name))
+				del self.active_player
 			self.active_player = next(self.players_cycle)
 
-
 	def on_loop(self):
-		self.active_player.meeples.update(1)
+		self.active_player.meeples.update()
 
 	def render(self):
 		self.background.fill(BG_COLOR)

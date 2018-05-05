@@ -20,14 +20,18 @@ class InputHandler():
 			self.grabbed_meeple.on_click()
 		else:
 			print("{} has to {} now!".format(player.name, action))
+		clicked_field = self.allfields.get_sprites_at(self.event.pos)
+		if clicked_field:
+			print("clicked on field no: ", clicked_field.idx)
+			# print("field occupied by: ", clicked_field.occupied_by.player.name)
 
 	def on_leftbutton_up(self):
 		try:
 			if self.grabbed_meeple:
-				if self.grabbed_meeple.drop(self.boardfields):
+				if self.grabbed_meeple.drop(self.allfields):
+					self.grabbed_meeple.fields_moved += self.die.number
 					for meeple in self.active_player.meeples:
 						meeple.allowed_field.empty()
-						print(meeple.allowed_field)
 					self.grabbed_meeple = []
 					if self.die.number == 6:
 						self.active_player.number_throws = 1
@@ -72,11 +76,19 @@ class InputHandler():
 					if self.die.number == 6:
 						self.active_player.action = "move"
 						self.active_player.set_allowed_fields(
-							self.boardfields, self.die.number)
+							self.boardfields, self.homefields, self.die.number)
 					else:
 						self.active_player.number_throws -= 1
 						print("Noch {} Würfe über!".format(self.active_player.number_throws))
 				else:
 					self.active_player.action = "move"
 					self.active_player.set_allowed_fields(
-						self.boardfields, self.die.number)
+						self.boardfields, self.homefields, self.die.number)
+					for meeple in self.active_player.meeples:
+						print("meeple felder", meeple.allowed_field)
+					if self.active_player.stuck:
+						if not self.die.number == 6:
+							self.active_player.number_throws = 0
+						self.active_player.action = "roll"
+
+

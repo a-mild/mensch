@@ -72,6 +72,7 @@ class Die(pg.sprite.Sprite):
 
 	def stop_roll(self, player):
 		self.number = randint(1, 6)
+		# self.number = 6
 		self.rolling = False
 		self.roll_speed = 250
 		pg.time.set_timer(ROLL_EVENT, 0)

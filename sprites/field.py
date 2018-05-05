@@ -12,6 +12,7 @@ class Field(pg.sprite.Sprite):
 		self.color = color
 		self._admissable = False
 		self.idx = idx
+		self.occupied_by = None
 
 		self.image = self.initial_field_drawing()
 		self.rect = self.image.get_rect()
@@ -24,11 +25,11 @@ class Field(pg.sprite.Sprite):
 	@admissable.setter
 	def admissable(self, value):
 		self._admissable = value
-		print("change color")
+		# print("change color")
 		if self._admissable == True:
 			self.change_fieldcolor(pg.Color('gray'))
 		else:
-			self.change_fieldcolor(pg.Color('white'))
+			self.change_fieldcolor(self.color)
 
 	def update(self):
 		
@@ -43,6 +44,4 @@ class Field(pg.sprite.Sprite):
 
 	def change_fieldcolor(self, new_color):
 		pg.draw.circle(self.image, new_color, (self.radius, self.radius), self.radius)
-
-
-
+		pg.draw.circle(self.image, BLACK, (self.radius, self.radius), self.radius, 3)

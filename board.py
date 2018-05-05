@@ -28,6 +28,7 @@ class Board(object):
 
 		fieldsize = self.boardsize // 27
 		counter_boardfields = 0
+		counter_homefields = 40
 		for i in range(4):
 			for fieldtype in Board.relative_field_points:
 				for rel_point in Board.relative_field_points[fieldtype]:
@@ -36,7 +37,7 @@ class Board(object):
 					if fieldtype == 'out':
 						if self.players[i]:
 							color = self.players[i].color
-							field = Field(point, fieldsize, 0, color)
+							field = Field(point, fieldsize, -1, color)
 							self.allfields.add(field)
 							meeple = Meeple(self.players[i], field)
 							self.players[i].meeples.add(meeple)
@@ -46,10 +47,11 @@ class Board(object):
 					elif fieldtype == 'home':
 						if self.players[i]:
 							color = self.players[i].color
-						self.allfields.add(Field(point, fieldsize, 100, color))
+						self.homefields.add(Field(point, fieldsize, counter_homefields, color))
+						counter_homefields += 1
 					else:
-						counter_boardfields += 1
 						self.boardfields.add(Field(point, fieldsize, counter_boardfields))
+						counter_boardfields += 1
 
 
 class HUD(object):
